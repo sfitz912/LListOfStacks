@@ -1,13 +1,13 @@
 import ch02.stacks.*;
-import support.LLNode;
+import support.DLLNode;
 
 public class LListOfStacks<T>
 {
    private LinkedStack<ArrayBoundedStack<T>> stacks;
    private final int STACK_CAPACITY = 10;
    private int numberOfStacks;
-   private LLNode<AccessStack<T>> top;
-   private LLNode<AccessStack<T>> head;
+   private DLLNode<AccessStack<T>> top;
+   private DLLNode<AccessStack<T>> head;
    
    public LListOfStacks()
    {
@@ -15,7 +15,7 @@ public class LListOfStacks<T>
       this.stacks = new LinkedStack<ArrayBoundedStack<T>>();
       stacks.push( new ArrayBoundedStack<T>( STACK_CAPACITY ) );
       */
-      head = new LLNode<AccessStack<T>>( new AccessStack<T>(STACK_CAPACITY) );
+      head = new DLLNode<AccessStack<T>>( new AccessStack<T>(STACK_CAPACITY) );
       top = head;
       numberOfStacks = 1;
    }
@@ -38,8 +38,8 @@ public class LListOfStacks<T>
       */
       if (top.getInfo().isFull() )
       {
-         LLNode<AccessStack<T>> newTop = new LLNode<AccessStack<T>>(new AccessStack<T>(STACK_CAPACITY));
-         top.setLink( newTop );
+         DLLNode<AccessStack<T>> newTop = new DLLNode<AccessStack<T>>(new AccessStack<T>(STACK_CAPACITY));
+         top.setForward( newTop );
          top = newTop;
       }
       top.getInfo().push(element);
@@ -52,6 +52,22 @@ public class LListOfStacks<T>
    */
    public void pop()
    {
+      if (top.getInfo().isEmpty() )
+      {
+         throw new StackUnderflowException("Pop attempted on empty LListOfStacks");
+      }
+      else
+      {
+         top.getInfo().pop();
+         // If top is now empty
+         if (top.getInfo().isEmpty() )
+         {
+            top.setInfo(null);
+            top = top.getBack();
+            top.setForward(null);
+         }
+      }
+      /*
       if (stacks.top().isEmpty() )
       {
          throw new StackUnderflowException("Pop attempted on empty SetOfStacks");
@@ -67,6 +83,7 @@ public class LListOfStacks<T>
             numberOfStacks--;
          }
       }
+      */
    }
    
    /**
