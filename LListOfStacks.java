@@ -188,9 +188,21 @@ public class LListOfStacks<T>
       {
          if (current == bottom)
          {
-            bottom = top;
-            top.setBack( null );
+            if (bottom != top)
+            {
+               bottom = bottom.getForward();
+               bottom.setBack( null );
+            }
          }
+         else
+         {
+            current.getBack().setForward( current.getForward() );
+            if (current != top)
+            {
+               current.getForward().setBack( current.getBack() );
+            }
+         }
+         
       }
       
       return output;

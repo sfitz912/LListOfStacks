@@ -39,7 +39,7 @@
       <ViewerClass>jgrasp_viewers.java__lang__Object_LinkedView</ViewerClass>
       <ViewerData>
         <ViewData>
-          <Width>177</Width>
+          <Width>132</Width>
           <Round>false</Round>
         </ViewData>
       </ViewerData>
@@ -48,50 +48,14 @@
   <Frame>
     <Bounds>
       <AutoSize>true</AutoSize>
-      <X>830</X>
-      <Y>110</Y>
-      <W>82</W>
-      <H>47</H>
-    </Bounds>
-    <LabelLoc>
-      <WO>false</WO>
-    </LabelLoc>
-    <Viewer>
-      <ScopeID>1</ScopeID>
-      <Expression>`local int` nextAccumulator</Expression>
-      <ViewerClass>jgrasp_viewers._X_ElementView</ViewerClass>
-    </Viewer>
-  </Frame>
-  <Frame>
-    <Bounds>
-      <AutoSize>true</AutoSize>
       <X>40</X>
-      <Y>270</Y>
+      <Y>400</Y>
       <W>618</W>
       <H>168</H>
     </Bounds>
     <Viewer>
       <ScopeID>0</ScopeID>
       <Expression>`local LListOfStacks` stuff.top.info</Expression>
-      <ViewerClass>jgrasp_viewers.java__lang__Object_LinkedView</ViewerClass>
-      <ViewerData>
-        <ViewData>
-          <Round>false</Round>
-        </ViewData>
-      </ViewerData>
-    </Viewer>
-  </Frame>
-  <Frame>
-    <Bounds>
-      <AutoSize>true</AutoSize>
-      <X>40</X>
-      <Y>480</Y>
-      <W>618</W>
-      <H>168</H>
-    </Bounds>
-    <Viewer>
-      <ScopeID>1</ScopeID>
-      <Expression>this.bottom.forward.info</Expression>
       <ViewerClass>jgrasp_viewers.java__lang__Object_LinkedView</ViewerClass>
       <ViewerData>
         <ViewData>
@@ -121,7 +85,7 @@
     <Bounds>
       <AutoSize>true</AutoSize>
       <X>40</X>
-      <Y>690</Y>
+      <Y>760</Y>
       <W>618</W>
       <H>168</H>
     </Bounds>
@@ -136,12 +100,48 @@
       </ViewerData>
     </Viewer>
   </Frame>
+  <Frame>
+    <Bounds>
+      <AutoSize>true</AutoSize>
+      <X>830</X>
+      <Y>110</Y>
+      <W>82</W>
+      <H>47</H>
+    </Bounds>
+    <LabelLoc>
+      <WO>false</WO>
+    </LabelLoc>
+    <Viewer>
+      <ScopeID>1</ScopeID>
+      <Expression>`local int` nextAccumulator</Expression>
+      <ViewerClass>jgrasp_viewers._X_ElementView</ViewerClass>
+    </Viewer>
+  </Frame>
+  <Frame>
+    <Bounds>
+      <AutoSize>true</AutoSize>
+      <X>40</X>
+      <Y>580</Y>
+      <W>618</W>
+      <H>168</H>
+    </Bounds>
+    <Viewer>
+      <ScopeID>1</ScopeID>
+      <Expression>this.bottom.forward.info</Expression>
+      <ViewerClass>jgrasp_viewers.java__lang__Object_LinkedView</ViewerClass>
+      <ViewerData>
+        <ViewData>
+          <Round>false</Round>
+        </ViewData>
+      </ViewerData>
+    </Viewer>
+  </Frame>
   <Size>
     <W>1000</W>
-    <H>982</H>
+    <H>1031</H>
   </Size>
   <ESize>
     <W>1000</W>
-    <H>982</H>
+    <H>1031</H>
   </ESize>
 </Canvas>
