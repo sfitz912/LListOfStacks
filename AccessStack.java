@@ -30,6 +30,10 @@ public class AccessStack<T> extends ArrayBoundedStack<T>
          elements[topIndex] = null;
          topIndex--;
       }
+      else
+      {
+         pop();
+      }
       return toPop;
    }
    
