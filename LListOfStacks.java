@@ -7,7 +7,7 @@ public class LListOfStacks<T>
    private final int STACK_CAPACITY = 10;
    private int numberOfStacks;
    private DLLNode<AccessStack<T>> top;
-   private DLLNode<AccessStack<T>> head;
+   private DLLNode<AccessStack<T>> bottom;
    
    public LListOfStacks()
    {
@@ -15,8 +15,8 @@ public class LListOfStacks<T>
       this.stacks = new LinkedStack<ArrayBoundedStack<T>>();
       stacks.push( new ArrayBoundedStack<T>( STACK_CAPACITY ) );
       */
-      head = new DLLNode<AccessStack<T>>( new AccessStack<T>(STACK_CAPACITY) );
-      top = head;
+      bottom = new DLLNode<AccessStack<T>>( new AccessStack<T>(STACK_CAPACITY) );
+      top = bottom;
       numberOfStacks = 1;
    }
    
@@ -36,11 +36,15 @@ public class LListOfStacks<T>
       
       stacks.top().push( element );
       */
+      // If the top is full, create a new stack, link it back to the existing top, link 
+      // the existing top to it, and make it the top.  
       if (top.getInfo().isFull() )
       {
          DLLNode<AccessStack<T>> newTop = new DLLNode<AccessStack<T>>(new AccessStack<T>(STACK_CAPACITY));
          top.setForward( newTop );
+         newTop.setBack( top );
          top = newTop;
+         numberOfStacks++;
       }
       top.getInfo().push(element);
    }
@@ -52,7 +56,7 @@ public class LListOfStacks<T>
    */
    public void pop()
    {
-      if (top.getInfo().isEmpty() )
+      if ( isEmpty() )
       {
          throw new StackUnderflowException("Pop attempted on empty LListOfStacks");
       }
@@ -62,9 +66,15 @@ public class LListOfStacks<T>
          // If top is now empty
          if (top.getInfo().isEmpty() )
          {
-            top.setInfo(null);
-            top = top.getBack();
-            top.setForward(null);
+            // If this is not the only stack, get rid of it.  If there's only one, and it's
+            // empty, we'll keep it
+            if (top != bottom)
+            {
+               top.setInfo(null);
+               top = top.getBack();
+               top.setForward(null);
+               numberOfStacks--;
+            }
          }
       }
       /*
@@ -94,6 +104,15 @@ public class LListOfStacks<T>
    */
    public T top()
    {
+      if (top.getInfo().isEmpty() )
+      {
+         throw new StackUnderflowException("Top attempted on an empty SetOfStacks");
+      }
+      else
+      {
+         return top.getInfo().top();
+      }
+      /*
       if (stacks.top().isEmpty() )
       {
          throw new StackUnderflowException("Top attempted on an empty SetOfStacks");
@@ -102,6 +121,7 @@ public class LListOfStacks<T>
       {
          return stacks.top().top();
       }
+      */
    }
    
    /**
@@ -120,7 +140,8 @@ public class LListOfStacks<T>
    */
    public boolean isEmpty()
    {
-      if (numberOfStacks == 1 && stacks.top().isEmpty() )
+      // If there's only one stack, and it's empty
+      if ((top == bottom ) && top.getInfo().isEmpty() )
       {
          return true;
       }
@@ -138,5 +159,40 @@ public class LListOfStacks<T>
    public int numStacks()
    {
       return numberOfStacks;
+   }
+   
+   /**
+      The popAt method removes and returns the element at the given index.  
+      @param index The index of the item to pop.
+      @return The element at the index
+   */
+   public T popAt(int index)
+   {
+      int accumulator = 0;
+      int nextAccumulator = 0;
+      T output = null;
+      DLLNode<AccessStack<T>> current = bottom;
+      
+      while (accumulator <= index)
+      {
+         nextAccumulator = accumulator + current.getInfo().size();
+         if (nextAccumulator > index)
+         {
+            output = current.getInfo().popAt( index - accumulator );
+            break;
+         }
+         accumulator = nextAccumulator;
+         current = current.getForward();
+      }
+      if (current.getInfo().isEmpty() )
+      {
+         if (current == bottom)
+         {
+            bottom = top;
+            top.setBack( null );
+         }
+      }
+      
+      return output;
    }
 }
