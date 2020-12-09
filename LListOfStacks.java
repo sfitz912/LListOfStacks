@@ -1,0 +1,125 @@
+import ch02.stacks.*;
+import support.LLNode;
+
+public class LListOfStacks<T>
+{
+   private LinkedStack<ArrayBoundedStack<T>> stacks;
+   private final int STACK_CAPACITY = 10;
+   private int numberOfStacks;
+   private LLNode<AccessStack<T>> top;
+   private LLNode<AccessStack<T>> head;
+   
+   public LListOfStacks()
+   {
+      /*
+      this.stacks = new LinkedStack<ArrayBoundedStack<T>>();
+      stacks.push( new ArrayBoundedStack<T>( STACK_CAPACITY ) );
+      */
+      head = new LLNode<AccessStack<T>>( new AccessStack<T>(STACK_CAPACITY) );
+      top = head;
+      numberOfStacks = 1;
+   }
+   
+   /**
+      The push method places element at the top of the top stack, 
+      adds another stack if necessary.    
+      @param element The element to add to stack
+   */
+   public void push(T element)
+   {
+      /*
+      if (stacks.top().isFull() )
+      {
+         stacks.push( new ArrayBoundedStack<T>( STACK_CAPACITY ) );
+         numberOfStacks++;
+      }
+      
+      stacks.top().push( element );
+      */
+      if (top.getInfo().isFull() )
+      {
+         LLNode<AccessStack<T>> newTop = new LLNode<AccessStack<T>>(new AccessStack<T>(STACK_CAPACITY));
+         top.setLink( newTop );
+         top = newTop;
+      }
+      top.getInfo().push(element);
+   }
+   
+   /**
+      The pop method throws StackUnderflowException if the SetOfStacks is empty,
+      otherwise it removes the top element of the top stack.
+      @throws StackUnderflowException
+   */
+   public void pop()
+   {
+      if (stacks.top().isEmpty() )
+      {
+         throw new StackUnderflowException("Pop attempted on empty SetOfStacks");
+      }
+      else
+      {
+         stacks.top().pop();     // Remove top element of top stack
+         
+         // If top stack is now empty, pop it, but keep one stack at all times
+         if (stacks.top().isEmpty() && (numberOfStacks > 1) )
+         {
+            stacks.pop();
+            numberOfStacks--;
+         }
+      }
+   }
+   
+   /**
+      The top method returns the top element in the SetOfStacks.  Throws StackUnderflowException
+      if top stack is empty
+      @return The top element of top stack
+      @throws StackUnderflowException
+   */
+   public T top()
+   {
+      if (stacks.top().isEmpty() )
+      {
+         throw new StackUnderflowException("Top attempted on an empty SetOfStacks");
+      }
+      else
+      {
+         return stacks.top().top();
+      }
+   }
+   
+   /**
+      The isFull method returns false, because stacks is never full.
+      @return false
+   */
+   public boolean isFull()
+   {
+      return false;
+   }
+   
+   /**
+      The isEmpty method returns true if the SetOfStacks is empty, false
+      otherwise.
+      @return True if empty, false otherwise
+   */
+   public boolean isEmpty()
+   {
+      if (numberOfStacks == 1 && stacks.top().isEmpty() )
+      {
+         return true;
+      }
+      else
+      {
+         return false;
+      }
+   }
+   
+   /**
+      The numStacks method returns the number of stacks.  An empty SetOfStacks
+      will always have one empty ArrayBoundedStack
+      @return The number of stacks
+   */
+   public int numStacks()
+   {
+      return numberOfStacks;
+   }
+}
