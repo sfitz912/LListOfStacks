@@ -3,18 +3,18 @@ import support.DLLNode;
 
 public class LListOfStacks<T>
 {
-   private LinkedStack<ArrayBoundedStack<T>> stacks;
-   private final int STACK_CAPACITY = 10;
-   private int numberOfStacks;
    private DLLNode<AccessStack<T>> top;
    private DLLNode<AccessStack<T>> bottom;
    
+   private final int STACK_CAPACITY = 10;
+   private int numberOfStacks;
+   
+   /**
+      This constructor sets up a doubly linked list of stacks with one node,
+      containing one empty stack
+   */
    public LListOfStacks()
    {
-      /*
-      this.stacks = new LinkedStack<ArrayBoundedStack<T>>();
-      stacks.push( new ArrayBoundedStack<T>( STACK_CAPACITY ) );
-      */
       bottom = new DLLNode<AccessStack<T>>( new AccessStack<T>(STACK_CAPACITY) );
       top = bottom;
       numberOfStacks = 1;
@@ -27,15 +27,6 @@ public class LListOfStacks<T>
    */
    public void push(T element)
    {
-      /*
-      if (stacks.top().isFull() )
-      {
-         stacks.push( new ArrayBoundedStack<T>( STACK_CAPACITY ) );
-         numberOfStacks++;
-      }
-      
-      stacks.top().push( element );
-      */
       // If the top is full, create a new stack, link it back to the existing top, link 
       // the existing top to it, and make it the top.  
       if (top.getInfo().isFull() )
@@ -77,23 +68,6 @@ public class LListOfStacks<T>
             }
          }
       }
-      /*
-      if (stacks.top().isEmpty() )
-      {
-         throw new StackUnderflowException("Pop attempted on empty SetOfStacks");
-      }
-      else
-      {
-         stacks.top().pop();     // Remove top element of top stack
-         
-         // If top stack is now empty, pop it, but keep one stack at all times
-         if (stacks.top().isEmpty() && (numberOfStacks > 1) )
-         {
-            stacks.pop();
-            numberOfStacks--;
-         }
-      }
-      */
    }
    
    /**
@@ -112,16 +86,6 @@ public class LListOfStacks<T>
       {
          return top.getInfo().top();
       }
-      /*
-      if (stacks.top().isEmpty() )
-      {
-         throw new StackUnderflowException("Top attempted on an empty SetOfStacks");
-      }
-      else
-      {
-         return stacks.top().top();
-      }
-      */
    }
    
    /**
@@ -173,6 +137,7 @@ public class LListOfStacks<T>
       T output = null;
       DLLNode<AccessStack<T>> current = bottom;
       
+      // Loop until accumulator < index < nextAccumulator
       while (accumulator <= index)
       {
          nextAccumulator = accumulator + current.getInfo().size();
@@ -184,16 +149,21 @@ public class LListOfStacks<T>
          accumulator = nextAccumulator;
          current = current.getForward();
       }
+      
+      // Remove empty node if necessary
       if (current.getInfo().isEmpty() )
       {
+         // If the bottom stack is empty
          if (current == bottom)
          {
+            // And it's not the only stack
             if (bottom != top)
             {
                bottom = bottom.getForward();
                bottom.setBack( null );
             }
          }
+         // For stacks other than the bottom
          else
          {
             current.getBack().setForward( current.getForward() );
